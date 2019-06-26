@@ -1,4 +1,4 @@
-import { CHAT_MESSAGE_REQUEST, CHAT_LOAD_MESSAGES_REQUEST, CHAT_LOAD_MESSAGES_SUCCESS, FIREBASE_MEDIA_UPLOAD_REQUEST } from './types'
+import { CHAT_MESSAGE_REQUEST, CHAT_LOAD_MESSAGES_REQUEST, CHAT_LOAD_MESSAGES_SUCCESS, FIREBASE_IMAGE_UPLOAD_REQUEST, FIREBASE_VIDEO_UPLOAD_REQUEST } from './types'
 
 export const sendChatMessageRequest = chatPayload => ({
   type: CHAT_MESSAGE_REQUEST,
@@ -11,6 +11,11 @@ export const loadChatMessageRequest = chatToken => ({
 })
 
 export const uploadmageRequest = uploadData => ({
-    type: FIREBASE_MEDIA_UPLOAD_REQUEST,
+    type: FIREBASE_IMAGE_UPLOAD_REQUEST,
+    payload: uploadData
+  })
+
+  export const uploadVideoRequest = uploadData => ({
+    type: FIREBASE_VIDEO_UPLOAD_REQUEST,
     payload: uploadData
   })

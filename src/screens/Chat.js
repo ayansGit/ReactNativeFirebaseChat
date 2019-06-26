@@ -40,15 +40,21 @@ class Chat extends Component {
           return nextProps
 
         case FIREBASE_MEDIA_UPLOAD_SUCCESS:
-          let imageUrl = nextProps.chatImageUrl
+          let imageUrl = ''
+          let videoUrl = ''
 
+          if (nextProps.chatMediaData.mediaType == 'image') {
+            imageUrl = nextProps.chatMediaData.url
+          } else if (nextProps.chatMediaData.mediaType == 'video') {
+            videoUrl = nextProps.chatMediaData.url
+          }
           let chatBody = (chatPayload = {
             chatToken: 'chatToken1',
             chatBody: {
               content: '',
               imageUrl: imageUrl,
-              videoUrl: '',
-              senderId: prevState.myId
+              videoUrl: videoUrl,
+              senderId: prevState.receiverId
             }
           })
 
@@ -156,6 +162,8 @@ class Chat extends Component {
               ? response.uri
               : response.uri.replace('file://', '')
         }
+
+        console.log('video: ', video)
       }
     })
   }
@@ -182,7 +190,7 @@ class Chat extends Component {
         console.log('User tapped custom button: ', response.customButton)
       } else {
         const source = { uri: response.uri }
-        
+
         // You can also display the image using data:
         // const source = { uri: 'data:image/jpeg;base64,' + response.data };
         var media = {
@@ -199,18 +207,15 @@ class Chat extends Component {
     })
   }
 
-
   renderItem (data) {
     return (
-      
-        <MessageItem
-          isReceiver={this.state.myId != data.item.senderId}
-          message={data.item.message}
-          image={data.item.imageUrl}
-          video={data.item.videoUrl}
-          onImageDownload = {() =>{}}
-        />
-      
+      <MessageItem
+        isReceiver={this.state.myId != data.item.senderId}
+        message={data.item.message}
+        image={data.item.imageUrl}
+        video={data.item.videoUrl}
+        onImageDownload={() => {}}
+      />
     )
   }
 
@@ -300,7 +305,7 @@ class Chat extends Component {
                     content: this.state.message,
                     imageUrl: '',
                     videoUrl: '',
-                    senderId: this.state.myId
+                    senderId: this.state.receiverId
                   }
                 })
                 if (this.state.message.trim() != '') {
@@ -331,7 +336,7 @@ const mapStateToProps = state => {
     messageLoadingError: state.chat.messageLoadingError,
     chatData: state.chat.chatData,
     chatSentSuccessMessage: state.chat.chatSentSuccessMessage,
-    chatImageUrl: state.chat.chatImageUrl,
+    chatMediaData: state.chat.chatMediaData,
     operation_type: state.chat.operation_type
   }
 }

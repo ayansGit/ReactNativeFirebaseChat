@@ -81,7 +81,7 @@ import {
         return {
           ...state,
           operation_type: action.type,
-          chatImageUrl: action.data,
+          chatMediaData: action.data,
           isMediaUploading: false
         };
         case FIREBASE_MEDIA_UPLOAD_ERROR:

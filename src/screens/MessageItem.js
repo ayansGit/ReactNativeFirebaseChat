@@ -11,7 +11,7 @@ export default class MessageItem extends Component {
       <View style={{ margin: 10 }}>
         <View
           style={
-            this.props.isReceiver
+            !this.props.isReceiver
               ? {
                 backgroundColor: '#bcbcbc',
                 borderRadius: 5,

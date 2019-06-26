@@ -7,7 +7,8 @@ import {
   CHAT_MESSAGE_ERROR,
   CHAT_MESSAGE_REQUEST,
   CHAT_MESSAGE_SUCCESS,
-  FIREBASE_MEDIA_UPLOAD_REQUEST,
+  FIREBASE_IMAGE_UPLOAD_REQUEST,
+  FIREBASE_VIDEO_UPLOAD_REQUEST,
   FIREBASE_MEDIA_UPLOAD_SUCCESS,
   FIREBASE_MEDIA_UPLOAD_ERROR
 } from '../actions/types'
@@ -31,6 +32,20 @@ export function * uploadImage (action) {
   }
 }
 
+export function * uploadVideo (action) {
+  try {
+    let response = yield call(
+      storage.uploadVideo,
+      action.payload.uri,
+      action.payload.chatToken
+    )
+    yield put({ type: FIREBASE_MEDIA_UPLOAD_SUCCESS, data: response })
+  } catch (error) {
+    yield put({ type: FIREBASE_MEDIA_UPLOAD_ERROR, error: error })
+  }
+}
+
+
 export function * getChatMessages (action) {
   console.log('payload', action.payload)
   // Creates an eventChannel and starts the listener;
@@ -45,7 +60,6 @@ export function * getChatMessages (action) {
             message: child.val().content,
             senderId: child.val().senderId,
             imageUrl: child.val().imageUrl
-
           })
         })
 

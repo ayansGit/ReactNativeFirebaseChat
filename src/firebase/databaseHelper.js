@@ -17,6 +17,15 @@ export const storage = {
     } catch (error) {
       throw error
     }
+  },
+  uploadVideo: async(uri, chatToken) => {
+    try {
+      let response = await uploadVideoToStorage(uri, chatToken)
+      console.log(response)
+      return response
+    } catch (error) {
+      throw error
+    }
   }
 }
 
@@ -51,7 +60,54 @@ const uploadImageToStorage = (
 
       })
       .then(url => {
-        resolve(url)
+        let data = {
+          mediaType: "image",
+          url: url
+        }
+        resolve(data)
+      })
+      .catch(error => {
+        reject(error)
+      })
+  })
+}
+
+const uploadVideoToStorage = (
+  uri,
+  chatToken,
+  mime = 'video/mp4'
+) => {
+  return new Promise((resolve, reject) => {
+    const uploadUri = uri
+    let uploadBlob = null
+
+    var date = new Date()
+    console.log("date",date.toUTCString);
+    const videoRef = firebaseService
+      .storage()
+      .ref('videos')
+      .child(chatToken)
+      .child(date.toString())
+
+    fs.readFile(uploadUri, 'base64')
+      .then(data => {
+        return Blob.build(data, { type: `${mime};BASE64` })
+      })
+      .then(blob => {
+        uploadBlob = blob
+        return videoRef.put(blob, { contentType: mime })
+      })
+      .then(() => {
+        uploadBlob.close()
+        return videoRef.getDownloadURL()
+
+      })
+      .then(url => {
+        let data = {
+          mediaType: "video",
+          url: url
+        }
+        resolve(data)
       })
       .catch(error => {
         reject(error)
