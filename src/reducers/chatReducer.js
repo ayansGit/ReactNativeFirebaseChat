@@ -7,7 +7,8 @@ import {
     CHAT_MESSAGE_REQUEST,
     CHAT_MESSAGE_SUCCESS,
     CHAT_MESSAGE_UPDATE,
-    FIREBASE_MEDIA_UPLOAD_REQUEST,
+    FIREBASE_IMAGE_UPLOAD_REQUEST,
+    FIREBASE_VIDEO_UPLOAD_REQUEST,
     FIREBASE_MEDIA_UPLOAD_SUCCESS,
     FIREBASE_MEDIA_UPLOAD_ERROR
   }
@@ -71,12 +72,20 @@ import {
             isSending: false
         }
 
-        case FIREBASE_MEDIA_UPLOAD_REQUEST:
+        case FIREBASE_IMAGE_UPLOAD_REQUEST:
         return {
           ...state,
           operation_type: action.type,
           isMediaUploading: true
         };
+
+        case FIREBASE_VIDEO_UPLOAD_REQUEST:
+        return {
+          ...state,
+          operation_type: action.type,
+          isMediaUploading: true
+        };
+
         case FIREBASE_MEDIA_UPLOAD_SUCCESS:
         return {
           ...state,

@@ -115,5 +115,9 @@ export function * watchSendMessage () {
 }
 
 export function * watchImageUpload () {
-  yield takeLatest(FIREBASE_MEDIA_UPLOAD_REQUEST, uploadImage)
+  yield takeLatest(FIREBASE_IMAGE_UPLOAD_REQUEST, uploadImage)
+}
+
+export function * watchVideoUpload () {
+  yield takeLatest(FIREBASE_VIDEO_UPLOAD_REQUEST, uploadVideo)
 }

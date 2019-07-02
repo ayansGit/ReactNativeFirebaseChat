@@ -5,7 +5,8 @@ import { connect } from 'react-redux'
 import {
   loadChatMessageRequest,
   sendChatMessageRequest,
-  uploadmageRequest
+  uploadmageRequest,
+  uploadVideoRequest
 } from '../actions/chatAction'
 import {
   FIREBASE_MEDIA_UPLOAD_REQUEST,
@@ -16,7 +17,7 @@ import MessageItem from './MessageItem'
 import FileAttachDialog from '../helper/FileAttachDialog'
 import ImagePicker from 'react-native-image-picker'
 class Chat extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
     this.state = {
       myId: 'abc123',
@@ -27,7 +28,7 @@ class Chat extends Component {
     this.createChatBody = this.createChatBody.bind(this)
   }
 
-  static getDerivedStateFromProps (nextProps, prevState) {
+  static getDerivedStateFromProps(nextProps, prevState) {
     console.log('nextProps', nextProps)
     console.log('prevState', prevState)
     if (nextProps.operation_type != null) {
@@ -66,7 +67,7 @@ class Chat extends Component {
     return nextProps
   }
 
-  createChatBody (
+  createChatBody(
     chatToken = '',
     message = '',
     imageUrl = '',
@@ -84,7 +85,7 @@ class Chat extends Component {
     })
   }
 
-  takePhoto () {
+  takePhoto() {
     const options = {
       quality: 0.8,
       maxWidth: 500,
@@ -131,7 +132,7 @@ class Chat extends Component {
     })
   }
 
-  takeVideo () {
+  takeVideo() {
     const options = {
       videoQuality: 'medium',
       mediaType: 'video',
@@ -162,13 +163,21 @@ class Chat extends Component {
               ? response.uri
               : response.uri.replace('file://', '')
         }
-
         console.log('video: ', video)
+        let uploadData = {
+          uri:
+            Platform.OS === 'android'
+              ? response.uri
+              : response.uri.replace('file://', ''),
+
+          chatToken: 'chatToken1'
+        }
+        this.props.uploadVideo(uploadData)
       }
     })
   }
 
-  choosetMedia () {
+  choosetMedia() {
     const options = {
       noData: true,
       videoQuality: 'medium',
@@ -207,19 +216,19 @@ class Chat extends Component {
     })
   }
 
-  renderItem (data) {
+  renderItem(data) {
     return (
       <MessageItem
         isReceiver={this.state.myId != data.item.senderId}
         message={data.item.message}
         image={data.item.imageUrl}
         video={data.item.videoUrl}
-        onImageDownload={() => {}}
+        onImageDownload={() => { }}
       />
     )
   }
 
-  render () {
+  render() {
     return (
       <Container>
         <FileAttachDialog
@@ -305,7 +314,7 @@ class Chat extends Component {
                     content: this.state.message,
                     imageUrl: '',
                     videoUrl: '',
-                    senderId: this.state.receiverId
+                    senderId: this.state.myId
                   }
                 })
                 if (this.state.message.trim() != '') {
@@ -351,7 +360,10 @@ const mapDispatchToProps = dispatch => {
     },
     uploadImage: uploadData => {
       dispatch(uploadmageRequest(uploadData))
-    }
+    },
+    uploadVideo: uploadData => {
+      dispatch(uploadVideoRequest(uploadData))
+    },
   }
 }
 

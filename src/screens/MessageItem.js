@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { Container, Content, Text, View, Input, Icon } from 'native-base'
 import { FlatList, Image, TouchableOpacity } from 'react-native'
+import Video from 'react-native-video';
+
 
 export default class MessageItem extends Component {
-  constructor (props) {
+  constructor(props) {
     super(props)
   }
-  render () {
+  render() {
     return (
       <View style={{ margin: 10 }}>
         <View
@@ -35,12 +37,16 @@ export default class MessageItem extends Component {
               }}
             >
               <Image
-                style={{ height: 300, width: "100%", alignSelf:"center" , padding: 10}}
+                style={{ height: 300, width: "100%", alignSelf: "center", padding: 10 }}
                 resizeMode="contain"
                 source={{ uri: this.props.image }}
               />
             </TouchableOpacity>
-          ) : null}
+          ) : <Video source={{ uri: this.props.video }}   // Can be a URL or a local file.
+            resizeMode={"cover"}                                     // Store reference
+            //onBuffer={this.onBuffer}                // Callback when remote video is buffering
+            //onError={this.videoError}               // Callback when video cannot be loaded
+            style={{ height: 300, width: "100%", alignSelf: "center", padding: 10 }} />}
         </View>
       </View>
     )
