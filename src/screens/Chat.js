@@ -11,6 +11,8 @@ import {
 import {
   FIREBASE_MEDIA_UPLOAD_REQUEST,
   FIREBASE_MEDIA_UPLOAD_SUCCESS,
+  CHAT_LOAD_MESSAGES_SUCCESS,
+  CHAT_LOAD_MESSAGES_ERROR,
   FIREBASE_MEDIA_UPLOAD_ERROR
 } from '../actions/types'
 import MessageItem from './MessageItem'
@@ -60,7 +62,6 @@ class Chat extends Component {
           })
 
           nextProps.sendMessage(chatBody)
-
           return nextProps
       }
     }

@@ -59,7 +59,8 @@ export function * getChatMessages (action) {
             chatId: child.key,
             message: child.val().content,
             senderId: child.val().senderId,
-            imageUrl: child.val().imageUrl
+            imageUrl: child.val().imageUrl,
+            videoUrl: child.val().videoUrl
           })
         })
 

@@ -37,16 +37,20 @@ export default class MessageItem extends Component {
               }}
             >
               <Image
-                style={{ height: 300, width: "100%", alignSelf: "center", padding: 10 }}
+                style={{ height: 300, alignSelf: "stretch", margin: 10 }}
                 resizeMode="contain"
-                source={{ uri: this.props.image }}
+                source={{
+                  uri: this.props.image,
+                  cache: "only-if-cached"
+                }}
+
               />
             </TouchableOpacity>
           ) : <Video source={{ uri: this.props.video }}   // Can be a URL or a local file.
-            resizeMode={"cover"}                                     // Store reference
-            //onBuffer={this.onBuffer}                // Callback when remote video is buffering
-            //onError={this.videoError}               // Callback when video cannot be loaded
-            style={{ height: 300, width: "100%", alignSelf: "center", padding: 10 }} />}
+            resizeMode="none"
+            controls={true}
+            paused={true}
+            style={{ height: 300, alignSelf: "stretch", margin: 10 }} />}
         </View>
       </View>
     )
